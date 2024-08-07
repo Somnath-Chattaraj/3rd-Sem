@@ -10,85 +10,60 @@
 // accounts in one year. (Note: create at least 10 accounts for smooth operation)
 
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <cstdlib>
-#include <ctime>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
-using namespace std;
+#define NUM_ACCOUNTS 100
+#define MIN_BALANCE 1000
+#define INTEREST_RATE 0.04
 
-struct SavingsAccount {
-    string name;
+typedef struct {
+    char name[50];
     int accountNumber;
     double balance;
-    static double interestRate; 
+} SavingsAccount;
 
-    SavingsAccount(const string& accountHolder, int accNumber, double initialBalance)
-        : name(accountHolder), accountNumber(accNumber), balance(initialBalance) {}
-
-    void deposit(double amount) {
-        balance += amount;
-    }
-
-    bool withdraw(double amount) {
-        if (balance - amount >= 1000) {
-            balance -= amount;
-            return true;
-        }
-        return false;
-    }
-
-    void addInterest() {
-        double interest = balance * interestRate;
-        deposit(interest);
-    }
-};
-
-
-double SavingsAccount::interestRate = 0.04; 
-
-void createAccounts(vector<SavingsAccount>& accounts) {
+void createAccounts(SavingsAccount* accounts) {
     srand(time(0));
-    for (int i = 0; i < 100; ++i) {
-        string name = "AccountHolder" + to_string(i + 1);
-        double initialBalance = 1000 + (rand() % 99001); 
-        accounts.push_back(SavingsAccount(name, i + 1, initialBalance));
+    for (int i = 0; i < NUM_ACCOUNTS; ++i) {
+        sprintf(accounts[i].name, "AccountHolder%d", i + 1);
+        accounts[i].accountNumber = i + 1;
+        accounts[i].balance = MIN_BALANCE + (rand() % 99001); // Random balance between 1000 and 100000
     }
 }
 
-void calculateInterest(vector<SavingsAccount>& accounts) {
+void calculateInterest(SavingsAccount* accounts) {
     double totalInterest = 0.0;
-    for (auto& account : accounts) {
-        double interest = account.balance * SavingsAccount::interestRate;
+    for (int i = 0; i < NUM_ACCOUNTS; ++i) {
+        double interest = accounts[i].balance * INTEREST_RATE;
         totalInterest += interest;
-        account.addInterest();
+        accounts[i].balance += interest;
     }
-    cout << "Total interest paid to all accounts in one year: Rs. " << totalInterest << endl;
+    printf("Total interest paid to all accounts in one year: Rs. %.2f\n", totalInterest);
+}
+
+void printAccounts(SavingsAccount* accounts) {
+    for (int i = 0; i < NUM_ACCOUNTS; ++i) {
+        printf("Account Number: %d, Name: %s, Balance: Rs. %.2f\n", accounts[i].accountNumber, accounts[i].name, accounts[i].balance);
+    }
 }
 
 int main() {
-    vector<SavingsAccount> accounts;
+    SavingsAccount accounts[NUM_ACCOUNTS];
+
     createAccounts(accounts);
 
+    // Display initial account balances
+    printf("Initial Account Balances:\n");
+    printAccounts(accounts);
 
-    cout << "Initial Account Balances:" << endl;
-    for (const auto& account : accounts) {
-        cout << "Account Number: " << account.accountNumber
-             << ", Name: " << account.name
-             << ", Balance: Rs. " << account.balance << endl;
-    }
-
-
+    // Calculate and add interest to each account
     calculateInterest(accounts);
 
-
-    cout << "\nUpdated Account Balances after adding interest:" << endl;
-    for (const auto& account : accounts) {
-        cout << "Account Number: " << account.accountNumber
-             << ", Name: " << account.name
-             << ", Balance: Rs. " << account.balance << endl;
-    }
+    // Display updated account balances
+    printf("\nUpdated Account Balances after adding interest:\n");
+    printAccounts(accounts);
 
     return 0;
 }
