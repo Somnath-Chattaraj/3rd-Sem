@@ -1,0 +1,84 @@
+#include <iostream>
+#include <vector>
+#include <cmath>
+#include <cstdlib>
+#include <ctime>
+
+class Point {
+public:
+    double x, y, z;
+
+    Point(double x = 0, double y = 0, double z = 0) : x(x), y(y), z(z) {}
+
+    double distance(const Point& other) const {
+        return sqrt(pow(x - other.x, 2) + pow(y - other.y, 2) + pow(z - other.z, 2));
+    }
+};
+
+class WirelessDevice {
+private:
+    static int idCounter;
+    int id;
+    Point location;
+    double range;
+
+public:
+    WirelessDevice(double range = 10.0) : id(++idCounter), range(range) {
+        location = Point(rand() % 100, rand() % 100, rand() % 100);
+    }
+
+    const Point& getLocation() const {
+        return location;
+    }
+
+    double getRange() const {
+        return range;
+    }
+
+    void move() {
+        location = Point(rand() % 100, rand() % 100, rand() % 100);
+    }
+
+    bool isNeighbor(const WirelessDevice& other) const {
+        return location.distance(other.getLocation()) <= range;
+    }
+
+    int getId() const {
+        return id;
+    }
+};
+
+int WirelessDevice::idCounter = 0;
+
+int main() {
+    srand(static_cast<unsigned int>(time(0)));
+    std::vector<WirelessDevice> devices(10);
+
+    for (int i = 0; i < devices.size(); ++i) {
+        std::cout << "Device " << devices[i].getId() << " neighbors: ";
+        for (int j = 0; j < devices.size(); ++j) {
+            if (i != j && devices[i].isNeighbor(devices[j])) {
+                std::cout << devices[j].getId() << " ";
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    std::cout << "\nAfter moving devices to new locations:\n";
+
+    for (auto& device : devices) {
+        device.move();
+    }
+
+    for (int i = 0; i < devices.size(); ++i) {
+        std::cout << "Device " << devices[i].getId() << " neighbors: ";
+        for (int j = 0; j < devices.size(); ++j) {
+            if (i != j && devices[i].isNeighbor(devices[j])) {
+                std::cout << devices[j].getId() << " ";
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    return 0;
+}
