@@ -3,21 +3,22 @@
 #include <string>
 #include <algorithm>
 
+using namespace std;
 class Subject {
 public:
-    std::string name;
+     string name;
     int marks;
 
-    Subject(std::string name, int marks) : name(name), marks(marks) {}
+    Subject( string name, int marks) : name(name), marks(marks) {}
 };
 
 class GradeCard {
 private:
-    std::string department;
-    std::string studentName;
-    std::string rollNumber;
+     string department;
+     string studentName;
+     string rollNumber;
     int semester;
-    std::vector<Subject> subjects;
+     vector<Subject> subjects;
     double cgpa;
 
     void calculateCGPA() {
@@ -29,7 +30,7 @@ private:
     }
 
 public:
-    GradeCard(std::string department, std::string studentName, std::string rollNumber, int semester, const std::vector<Subject>& subjects)
+    GradeCard( string department,  string studentName,  string rollNumber, int semester, const  vector<Subject>& subjects)
         : department(department), studentName(studentName), rollNumber(rollNumber), semester(semester), subjects(subjects) {
         calculateCGPA();
     }
@@ -38,36 +39,36 @@ public:
         return cgpa;
     }
 
-    std::string getStudentName() const {
+     string getStudentName() const {
         return studentName;
     }
 
-    std::string getRollNumber() const {
+     string getRollNumber() const {
         return rollNumber;
     }
 };
 
 int main() {
-    std::vector<GradeCard> gradeCards;
+     vector<GradeCard> gradeCards;
 
     for (int i = 1; i <= 60; ++i) {
-        std::vector<Subject> subjects = {
+         vector<Subject> subjects = {
             {"Math", 85 + rand() % 15},
             {"Physics", 80 + rand() % 20},
             {"Chemistry", 75 + rand() % 25},
             {"Computer Science", 90 + rand() % 10},
             {"Biology", 70 + rand() % 30},
         };
-        gradeCards.push_back(GradeCard("CSE", "Student" + std::to_string(i), "Roll" + std::to_string(i), 3, subjects));
+        gradeCards.push_back(GradeCard("CSE", "Student" +  to_string(i), "Roll" +  to_string(i), 3, subjects));
     }
 
-    auto maxCGPA = std::max_element(gradeCards.begin(), gradeCards.end(), [](const GradeCard& a, const GradeCard& b) {
+    auto maxCGPA =  max_element(gradeCards.begin(), gradeCards.end(), [](const GradeCard& a, const GradeCard& b) {
         return a.getCGPA() < b.getCGPA();
     });
 
-    std::cout << "Highest CGPA: " << maxCGPA->getCGPA() << std::endl;
-    std::cout << "Student Name: " << maxCGPA->getStudentName() << std::endl;
-    std::cout << "Roll Number: " << maxCGPA->getRollNumber() << std::endl;
+     cout << "Highest CGPA: " << maxCGPA->getCGPA() <<  endl;
+     cout << "Student Name: " << maxCGPA->getStudentName() <<  endl;
+     cout << "Roll Number: " << maxCGPA->getRollNumber() <<  endl;
 
     return 0;
 }

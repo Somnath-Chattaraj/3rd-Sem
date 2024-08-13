@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 class Stack {
 private:
     int* buffer;
@@ -19,7 +21,7 @@ public:
         if (top < size - 1) {
             buffer[++top] = item;
         } else {
-            std::cout << "Stack overflow!" << std::endl;
+             cout << "Stack overflow!" <<  endl;
         }
     }
 
@@ -27,16 +29,16 @@ public:
         if (top >= 0) {
             return buffer[top--];
         } else {
-            std::cout << "Stack underflow!" << std::endl;
+             cout << "Stack underflow!" <<  endl;
             return -1;
         }
     }
 
     void disp() const {
         for (int i = top; i >= 0; --i) {
-            std::cout << buffer[i] << " ";
+             cout << buffer[i] << " ";
         }
-        std::cout << std::endl;
+         cout <<  endl;
     }
 };
 

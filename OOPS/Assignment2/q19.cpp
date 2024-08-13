@@ -2,24 +2,26 @@
 #include <vector>
 #include <algorithm>
 
+using namespace std;
+
 class Vector {
 private:
-    std::vector<int> data;
+     vector<int> data;
 
 public:
     Vector() = default;
 
-    Vector(const std::vector<int>& vec) : data(vec) {}
+    Vector(const  vector<int>& vec) : data(vec) {}
 
     Vector operator+(const Vector& other) const {
-        std::vector<int> result(data.size());
-        std::transform(data.begin(), data.end(), other.data.begin(), result.begin(), std::plus<int>());
+         vector<int> result(data.size());
+         transform(data.begin(), data.end(), other.data.begin(), result.begin(),  plus<int>());
         return Vector(result);
     }
 
     Vector operator-(const Vector& other) const {
-        std::vector<int> result(data.size());
-        std::transform(data.begin(), data.end(), other.data.begin(), result.begin(), std::minus<int>());
+         vector<int> result(data.size());
+         transform(data.begin(), data.end(), other.data.begin(), result.begin(),  minus<int>());
         return Vector(result);
     }
 
@@ -37,9 +39,9 @@ public:
 
     void disp() const {
         for (const auto& element : data) {
-            std::cout << element << " ";
+             cout << element << " ";
         }
-        std::cout << std::endl;
+         cout <<  endl;
     }
 };
 
@@ -50,21 +52,21 @@ int main() {
     Vector v3 = v1 + v2;
     Vector v4 = v2 - v1;
 
-    std::cout << "v1: ";
+     cout << "v1: ";
     v1.disp();
 
-    std::cout << "v2: ";
+     cout << "v2: ";
     v2.disp();
 
-    std::cout << "v3 (v1 + v2): ";
+     cout << "v3 (v1 + v2): ";
     v3.disp();
 
-    std::cout << "v4 (v2 - v1): ";
+     cout << "v4 (v2 - v1): ";
     v4.disp();
 
-    std::cout << "v1 == v2: " << (v1 == v2) << std::endl;
-    std::cout << "v1 < v2: " << (v1 < v2) << std::endl;
-    std::cout << "v1 > v2: " << (v1 > v2) << std::endl;
+     cout << "v1 == v2: " << (v1 == v2) <<  endl;
+     cout << "v1 < v2: " << (v1 < v2) <<  endl;
+     cout << "v1 > v2: " << (v1 > v2) <<  endl;
 
     return 0;
 }

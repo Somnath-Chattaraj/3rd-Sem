@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 class Complex {
 private:
     float real;
@@ -30,7 +32,7 @@ public:
     }
 
     void disp() const {
-        std::cout << real << " + " << imag << "i" << std::endl;
+         cout << real << " + " << imag << "i" <<  endl;
     }
 };
 
@@ -45,13 +47,13 @@ int main() {
 
     c3 = c1.sum(c2);
 
-    std::cout << "c1: ";
+     cout << "c1: ";
     c1.disp();
 
-    std::cout << "c2: ";
+     cout << "c2: ";
     c2.disp();
 
-    std::cout << "c3 (sum of c1 and c2): ";
+     cout << "c3 (sum of c1 and c2): ";
     c3.disp();
 
     return 0;

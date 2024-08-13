@@ -1,23 +1,23 @@
 #include <iostream>
 #include <vector>
 #include <map>
-
+using namespace std;
 class Book {
 private:
-    std::string isbn;
-    std::string title;
-    std::vector<std::string> authors;
+    string isbn;
+    string title;
+    vector<string> authors;
     double price;
 
 public:
-    Book(std::string isbn, std::string title, const std::vector<std::string>& authors, double price)
+    Book(string isbn, string title, const vector<string>& authors, double price)
         : isbn(isbn), title(title), authors(authors), price(price) {}
 
-    std::string getISBN() const {
+    string getISBN() const {
         return isbn;
     }
 
-    std::string getTitle() const {
+    string getTitle() const {
         return title;
     }
 
@@ -28,24 +28,24 @@ public:
 
 class BookStore {
 private:
-    std::map<std::string, int> inventory;
+    map<string, int> inventory;
 
 public:
     void addBook(const Book& book, int quantity) {
         inventory[book.getISBN()] += quantity;
     }
 
-    void sellBook(const std::string& isbn) {
+    void sellBook(const string& isbn) {
         if (inventory[isbn] > 0) {
             --inventory[isbn];
         } else {
-            std::cout << "Book out of stock!" << std::endl;
+            cout << "Book out of stock!" << endl;
         }
     }
 
     void disp() const {
         for (const auto& pair : inventory) {
-            std::cout << "ISBN: " << pair.first << " - Quantity: " << pair.second << std::endl;
+            cout << "ISBN: " << pair.first << " - Quantity: " << pair.second << endl;
         }
     }
 };

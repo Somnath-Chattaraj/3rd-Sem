@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 class Queue {
 private:
     int* data;
@@ -20,7 +22,7 @@ public:
             rear = (rear + 1) % size;
             ++count;
         } else {
-            std::cout << "Queue overflow!" << std::endl;
+             cout << "Queue overflow!" <<  endl;
         }
     }
 
@@ -31,7 +33,7 @@ public:
             --count;
             return element;
         } else {
-            std::cout << "Queue underflow!" << std::endl;
+             cout << "Queue underflow!" <<  endl;
             return -1;
         }
     }
@@ -40,11 +42,11 @@ public:
         int i = front;
         int items = count;
         while (items > 0) {
-            std::cout << data[i] << " ";
+             cout << data[i] << " ";
             i = (i + 1) % size;
             --items;
         }
-        std::cout << std::endl;
+         cout <<  endl;
     }
 };
 

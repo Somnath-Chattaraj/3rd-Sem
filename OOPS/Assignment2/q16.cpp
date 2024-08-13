@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+using namespace std;
 
 class Point {
 private:
@@ -17,7 +18,7 @@ int main() {
     Point p1(1.0, 2.0, 3.0);
     Point p2(4.0, 5.0, 6.0);
 
-    std::cout << "Distance between p1 and p2: " << p1.distance(p2) << std::endl;
+     cout << "Distance between p1 and p2: " << p1.distance(p2) <<  endl;
 
     return 0;
 }

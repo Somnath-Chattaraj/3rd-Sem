@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 
+using namespace std;
 class Point {
 public:
     double x, y, z;
@@ -52,32 +53,32 @@ int WirelessDevice::idCounter = 0;
 
 int main() {
     srand(static_cast<unsigned int>(time(0)));
-    std::vector<WirelessDevice> devices(10);
+     vector<WirelessDevice> devices(10);
 
     for (int i = 0; i < devices.size(); ++i) {
-        std::cout << "Device " << devices[i].getId() << " neighbors: ";
+         cout << "Device " << devices[i].getId() << " neighbors: ";
         for (int j = 0; j < devices.size(); ++j) {
             if (i != j && devices[i].isNeighbor(devices[j])) {
-                std::cout << devices[j].getId() << " ";
+                 cout << devices[j].getId() << " ";
             }
         }
-        std::cout << std::endl;
+         cout <<  endl;
     }
 
-    std::cout << "\nAfter moving devices to new locations:\n";
+     cout << "\nAfter moving devices to new locations:\n";
 
     for (auto& device : devices) {
         device.move();
     }
 
     for (int i = 0; i < devices.size(); ++i) {
-        std::cout << "Device " << devices[i].getId() << " neighbors: ";
+         cout << "Device " << devices[i].getId() << " neighbors: ";
         for (int j = 0; j < devices.size(); ++j) {
             if (i != j && devices[i].isNeighbor(devices[j])) {
-                std::cout << devices[j].getId() << " ";
+                 cout << devices[j].getId() << " ";
             }
         }
-        std::cout << std::endl;
+         cout <<  endl;
     }
 
     return 0;

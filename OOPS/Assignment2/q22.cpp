@@ -1,5 +1,7 @@
 #include <iostream>
 
+using namespace std;
+
 class Demo {
 private:
     int a;
@@ -24,11 +26,11 @@ public:
 int main() {
     Demo obj(10, 20);
 
-    std::cout << "a: " << obj.getA() << std::endl;
-    std::cout << "b: " << obj.getB() << std::endl;
+     cout << "a: " << obj.getA() <<  endl;
+     cout << "b: " << obj.getB() <<  endl;
 
     obj.modifyB(30);
-    std::cout << "b after modification: " << obj.getB() << std::endl;
+     cout << "b after modification: " << obj.getB() <<  endl;
 
     return 0;
 }

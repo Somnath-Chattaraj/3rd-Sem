@@ -1,6 +1,8 @@
 #include <iostream>
 #include <algorithm>
 
+using namespace std;
+
 class IntArray {
 private:
     int* arr;
@@ -12,19 +14,32 @@ public:
     }
 
     IntArray(const IntArray& other) : size(other.size) {
-        arr = new int[other.size];
-        std::copy(other.arr, other.arr + other.size, arr);
+        arr = new int[size];
+        copy(other.arr, other.arr + size, arr);
     }
 
     ~IntArray() {
         delete[] arr;
     }
 
+    IntArray& operator=(const IntArray& other) {
+        if (this == &other) return *this; // Handle self-assignment
+
+        delete[] arr;
+        size = other.size;
+        arr = new int[size];
+        copy(other.arr, other.arr + size, arr);
+        return *this;
+    }
+
     void setElements(const int* elements) {
-        std::copy(elements, elements + size, arr);
+        copy(elements, elements + size, arr);
     }
 
     IntArray operator+(const IntArray& other) const {
+        if (size != other.size) {
+            throw invalid_argument("Arrays must be of the same size");
+        }
         IntArray result(size);
         for (int i = 0; i < size; ++i) {
             result.arr[i] = arr[i] + other.arr[i];
@@ -32,19 +47,19 @@ public:
         return result;
     }
 
-    void reverse() {
-        std::reverse(arr, arr + size);
+    void reverseArray() {
+        reverse(arr, arr + size);
     }
 
-    void sort() {
-        std::sort(arr, arr + size);
+    void sortArray() {
+        sort(arr, arr + size);
     }
 
-    void disp() const {
+    void display() const {
         for (int i = 0; i < size; ++i) {
-            std::cout << arr[i] << " ";
+            cout << arr[i] << " ";
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 };
 
@@ -53,19 +68,19 @@ int main() {
     IntArray arr1(3);
     arr1.setElements(elements1);
 
-    std::cout << "arr1: ";
-    arr1.disp();
+    cout << "arr1: ";
+    arr1.display();
 
     IntArray arr2 = arr1;
-    std::cout << "arr2 (copy of arr1): ";
-    arr2.disp();
+    cout << "arr2 (copy of arr1): ";
+    arr2.display();
 
-    arr2.reverse();
-    std::cout << "arr2 after reversing: ";
-    arr2.disp();
+    arr2.reverseArray();
+    cout << "arr2 after reversing: ";
+    arr2.display();
 
-    std::cout << "arr1 (unchanged): ";
-    arr1.disp();
+    cout << "arr1 (unchanged): ";
+    arr1.display();
 
     return 0;
 }
