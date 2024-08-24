@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "Build Assembly",
+        "type": "shell",
+        "command": "nasm",
+        "args": [
+          "-f", "macho64", // Use 'elf64' instead of 'macho64' if nasm throws error
+          "${fileBasenameNoExtension}.asm",
+          "-o",
+          "${fileBasenameNoExtension}.o"
+        ],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "problemMatcher": [],
+        "detail": "Task to assemble the ASM file using NASM"
+      },
+      {
+        "label": "Link Assembly",
+        "type": "shell",
+        "command": "ld",
+        "args": [
+          "-macosx_version_min",
+          "11.0.0", // Replace it with the minimum version you want to support.
+          "-o",
+          "${fileBasenameNoExtension}",
+          "${fileBasenameNoExtension}.o"
+        ],
+        "group": "build",
+        "dependsOn": "Build Assembly",
+        "problemMatcher": [],
+        "detail": "Task to link the object file using ld"
+      },
+      {
+        "label": "Run Assembly",
+        "type": "shell",
+        "command": "./${fileBasenameNoExtension}",
+        "group": "test",
+        "dependsOn": "Link Assembly",
+        "problemMatcher": [],
+        "detail": "Task to run the assembled binary"
+      }
+    ]
+  }
+  
