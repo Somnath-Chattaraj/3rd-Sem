@@ -84,6 +84,7 @@ MUL BX           ; Multiply AX by BX (result in DX:AX)
 MOV [0600H], AX  ; Store the lower 16 bits of the result in DS:0600H
 MOV [0602H], DX  ; Store the upper 16 bits of the result in DS:0602H
 
+
 ; 10. Divide 88H by 33H.
 
 MOV AL, 88H      ; Load 88H into AL
