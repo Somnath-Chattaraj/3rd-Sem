@@ -1,0 +1,140 @@
+
+INSERT INTO Course (CourseID, CourseName, MaxIntakeCapacity) VALUES 
+(2, 'Mechanical Engineering', 80);
+INSERT INTO Course (CourseID, CourseName, MaxIntakeCapacity) VALUES
+(3, 'Electrical Engineering', 60);
+
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(1, 'Data Structures');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(2, 'Operating Systems');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(3, 'Thermodynamics');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(4, 'Circuit Theory');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(5, 'Algorithms');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(6, 'Machine Learning');
+INSERT INTO Subject (SubjectID, SubjectName) VALUES 
+(7, 'Control Systems');
+
+
+INSERT INTO Student (StudentID, StudentName, Email, Phone) VALUES
+(1, 'Alice Johnson', 'alice@example.com', '1234567890');
+INSERT INTO Student (StudentID, StudentName, Email, Phone) VALUES
+(2, 'Bob Smith', 'bob@example.com', '0987654321');
+INSERT INTO Student (StudentID, StudentName, Email, Phone) VALUES
+(3, 'Charlie Davis', 'charlie@example.com', '1122334455');
+
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES 
+(1, 1, 1, '2024-09-01');
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES 
+(2, 2, 2, '2024-09-01');
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES 
+(3, 3, 3, '2024-09-01');
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES 
+(4, 1, 3, '2024-09-02');
+INSERT INTO Enrollment (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES 
+(5, 2, 1, '2024-09-02');
+
+
+INSERT INTO MarksGrade (MarksGradeID, StudentID, SubjectID, CourseID, Marks, Grade) VALUES 
+(1, 1, 1, 1, 85, 'A');
+INSERT INTO MarksGrade (MarksGradeID, StudentID, SubjectID, CourseID, Marks, Grade) VALUES 
+(2, 2, 3, 2, 78, 'B');
+INSERT INTO MarksGrade (MarksGradeID, StudentID, SubjectID, CourseID, Marks, Grade) VALUES 
+(3, 3, 4, 3, 90, 'A');
+INSERT INTO MarksGrade (MarksGradeID, StudentID, SubjectID, CourseID, Marks, Grade) VALUES 
+(4, 1, 2, 1, 88, 'A');
+INSERT INTO MarksGrade (MarksGradeID, StudentID, SubjectID, CourseID, Marks, Grade) VALUES 
+(5, 2, 5, 1, 82, 'B');
+
+
+
+
+
+-- 2. Add the Enrollment Date Field to the Enrollment Table
+
+ALTER TABLE Enrollment 
+ADD ENROLL_DATE DATE;
+
+-- 3. Add a Not Null Constraint to Course Name
+
+ALTER TABLE Course 
+MODIFY CourseName VARCHAR(100) NOT NULL;
+
+-- 4. Find the Course Which Has More Than 3 Students
+
+SELECT CourseID, CourseName 
+FROM Course
+WHERE CourseID IN (
+    SELECT CourseID 
+    FROM Enrollment 
+    GROUP BY CourseID 
+    HAVING COUNT(StudentID) > 3
+);
+
+-- 5. Give the Details of a Student with All Subjects and Grades (Given StudentID as Input)
+
+SELECT S.StudentName, C.CourseName, SB.SubjectName, MG.Grade
+FROM Student S
+JOIN Enrollment E ON S.StudentID = E.StudentID
+JOIN MarksGrade MG ON E.StudentID = MG.StudentID AND E.CourseID = MG.CourseID
+JOIN Subject SB ON MG.SubjectID = SB.SubjectID
+JOIN Course C ON E.CourseID = C.CourseID
+WHERE S.StudentID = <input_student_id>;
+Replace <input_student_id> with the specific StudentID value.
+
+-- 6. Display the Course Where the Maximum Number of Students Enrolls
+
+SELECT CourseID, CourseName 
+FROM Course 
+WHERE CourseID = (
+    SELECT CourseID 
+    FROM Enrollment 
+    GROUP BY CourseID 
+    ORDER BY COUNT(StudentID) DESC 
+    LIMIT 1
+);
+
+-- 7. Find Out the Course Where No Student is Enrolled
+
+SELECT CourseID, CourseName 
+FROM Course 
+WHERE CourseID NOT IN (
+    SELECT DISTINCT CourseID 
+    FROM Enrollment
+);
+
+-- 8. Delete Course No 30 from the Course Table
+
+DELETE FROM Course 
+WHERE CourseID = 30;
+
+-- 9. Rename the Course Table as Department
+
+ALTER TABLE Course 
+RENAME TO Department;
+
+-- 10. Change the Marks Grade of Student “A” to “B” Who is Enrolled in the Subject DBMS. Assuming "DBMS" refers to a subject, you would first need to ensure the subject ID is known:
+
+UPDATE MarksGrade 
+SET Grade = 'B' 
+WHERE Grade = 'A' 
+AND SubjectID = (SELECT SubjectID FROM Subject WHERE SubjectName = 'DBMS');
+
+-- 11. Delete the Record of the Student Who is Enrolled in the Course 'IT'
+
+DELETE FROM Student 
+WHERE StudentID IN (
+    SELECT StudentID 
+    FROM Enrollment 
+    WHERE CourseID = (SELECT CourseID FROM Course WHERE CourseName = 'Information Technology')
+);
+
+-- 12. Change the Enroll Date to ‘16-08-2018’ Where Student ID is 18069. Convert the date to the default YYYY-MM-DD format:
+
+UPDATE Enrollment 
+SET EnrollmentDate = '2018-08-16' 
+WHERE StudentID = 18069;

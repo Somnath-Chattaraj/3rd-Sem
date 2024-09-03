@@ -1,0 +1,38 @@
+CREATE TABLE Course (
+    CourseID INT PRIMARY KEY,
+    CourseName VARCHAR(100),
+    MaxIntakeCapacity INT
+);
+
+CREATE TABLE Subject (
+    SubjectID INT PRIMARY KEY,
+    SubjectName VARCHAR(100)
+);
+
+CREATE TABLE Student (
+    StudentID INT PRIMARY KEY,
+    StudentName VARCHAR(100),
+    Email VARCHAR(100) UNIQUE,
+    Phone VARCHAR(15)
+);
+
+CREATE TABLE Enrollment (
+    EnrollmentID INT PRIMARY KEY,
+    StudentID INT,
+    CourseID INT,
+    EnrollmentDate DATE,
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+);
+
+CREATE TABLE MarksGrade (
+    MarksGradeID INT PRIMARY KEY,
+    StudentID INT,
+    SubjectID INT,
+    CourseID INT,
+    Marks INT,
+    Grade CHAR(2),
+    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
+    FOREIGN KEY (SubjectID) REFERENCES Subject(SubjectID),
+    FOREIGN KEY (CourseID) REFERENCES Course(CourseID)
+);
