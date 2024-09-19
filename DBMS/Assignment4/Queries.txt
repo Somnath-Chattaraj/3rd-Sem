@@ -1,0 +1,96 @@
+-- Inserting into Bank Table
+INSERT INTO Bank (Bank_id, Bank_name, MainBranch_id) VALUES 
+(1, 'SBI', 101), 
+(2, 'PNB', 102), 
+(3, 'HDFC', 103), 
+(4, 'ICICI', 104), 
+(5, 'Axis', 105);
+
+-- Inserting into Branch Table
+INSERT INTO Branch (Branch_id, Bank_id, Location) VALUES 
+(101, 1, 'Salt Lake'), 
+(102, 1, 'Sealdah'), 
+(103, 2, 'Sealdah'), 
+(104, 3, 'New Town'), 
+(105, 4, 'Park Street');
+
+-- Inserting into Account Table
+INSERT INTO Account (Account_id, Branch_id, Bank_id, Account_Holder_name) VALUES 
+(201, 101, 1, 'John Doe'), 
+(202, 101, 1, 'Jane Smith'), 
+(203, 103, 2, 'Sam Brown'), 
+(204, 102, 1, 'Mark Taylor'), 
+(205, 104, 3, 'Lucy White');
+
+-- Inserting into Loan Table
+INSERT INTO Loan (Loan_id, Account_id, Branch_id, Bank_id, Loan_amount) VALUES 
+(301, 201, 101, 1, 50000.00), 
+(302, 201, 101, 1, 100000.00), 
+(303, 202, 101, 1, 75000.00), 
+(304, 203, 103, 2, 40000.00), 
+(305, 204, 102, 1, 60000.00);
+
+
+
+
+
+-- 2. Ensure every customer has at least one account and restrict loans to at most two at a time
+
+ALTER TABLE Loan 
+ADD CONSTRAINT chk_max_loans CHECK (
+    (SELECT COUNT(*) FROM Loan WHERE Account_id = NEW.Account_id) <= 2
+);
+
+
+-- 3. Give all the account details of a person who has accounts in SBI
+
+SELECT * 
+FROM Account
+WHERE Bank_id = (SELECT Bank_id FROM Bank WHERE Bank_name = 'SBI');
+
+
+-- 4. Find the account holder name who has more than 2 accounts
+
+SELECT Account_Holder_name
+FROM Account
+GROUP BY Account_Holder_name
+HAVING COUNT(Account_id) > 2;
+
+
+-- 5. Rename the accounts table as account_details
+
+ALTER TABLE Account RENAME TO account_details;
+
+-- 6. Find the loan amount and loan taken from which bank for each account holder
+
+SELECT A.Account_Holder_name, L.Loan_amount, B.Bank_name
+FROM Loan L
+JOIN account_details A ON A.Account_id = L.Account_id
+JOIN Bank B ON B.Bank_id = L.Bank_id;
+
+
+-- 7. Find the account no. and account holder name who has not taken any loan
+
+SELECT A.Account_id, A.Account_Holder_name
+FROM account_details A
+LEFT JOIN Loan L ON A.Account_id = L.Account_id
+WHERE L.Account_id IS NULL;
+
+-- 8. Delete the account of all the persons who had accounts in PNB, Sealdah branch
+
+DELETE FROM account_details
+WHERE Branch_id = (SELECT Branch_id FROM Branch WHERE Bank_id = (SELECT Bank_id FROM Bank WHERE Bank_name = 'PNB') AND Location = 'Sealdah');
+
+-- 9. Update the branch to SBI, Salt Lake branch for all the persons who had an SBI account in Sealdah branch
+
+UPDATE account_details
+SET Branch_id = (SELECT Branch_id FROM Branch WHERE Bank_name = 'SBI' AND Location = 'Salt Lake')
+WHERE Branch_id = (SELECT Branch_id FROM Branch WHERE Bank_name = 'SBI' AND Location = 'Sealdah');
+
+-- 10. Find the maximum account balance of a person with account no 54321987654 among all of his accounts
+Assuming there's an Account_balance field in the account_details table:
+
+
+SELECT MAX(Account_balance) AS Max_Balance
+FROM account_details
+WHERE Account_id = 54321987654;
