@@ -1,0 +1,8 @@
+node_modules
+__pycache__
+.cph
+*.py
+*.o
+*.com
+*.pyc
+.DS_Store
