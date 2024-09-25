@@ -1,36 +1,36 @@
--- Bank Table
+
 CREATE TABLE Bank (
-    Bank_id INT PRIMARY KEY,
-    Bank_name VARCHAR(255),
-    MainBranch_id INT
+    BankID INT PRIMARY KEY,
+    BankName VARCHAR(100)
 );
 
--- Branch Table
 CREATE TABLE Branch (
-    Branch_id INT PRIMARY KEY,
-    Bank_id INT,
-    Location VARCHAR(255),
-    FOREIGN KEY (Bank_id) REFERENCES Bank(Bank_id)
+    BranchID INT PRIMARY KEY,
+    BranchName VARCHAR(100),
+    BankID INT,
+    FOREIGN KEY (BankID) REFERENCES Bank(BankID)
 );
 
--- Account Table
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(100),
+    Address VARCHAR(255)
+);
+
 CREATE TABLE Account (
-    Account_id INT PRIMARY KEY,
-    Branch_id INT,
-    Bank_id INT,
-    Account_Holder_name VARCHAR(255),
-    FOREIGN KEY (Branch_id) REFERENCES Branch(Branch_id),
-    FOREIGN KEY (Bank_id) REFERENCES Bank(Bank_id)
+    AccountNo INT PRIMARY KEY,
+    Balance DECIMAL(10, 2),
+    BranchID INT,
+    CustomerID INT,
+    FOREIGN KEY (BranchID) REFERENCES Branch(BranchID),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
 
--- Loan Table (Assuming loans are to accounts)
 CREATE TABLE Loan (
-    Loan_id INT PRIMARY KEY,
-    Account_id INT,
-    Branch_id INT,
-    Bank_id INT,
-    Loan_amount DECIMAL(10, 2),
-    FOREIGN KEY (Account_id) REFERENCES Account(Account_id),
-    FOREIGN KEY (Branch_id) REFERENCES Branch(Branch_id),
-    FOREIGN KEY (Bank_id) REFERENCES Bank(Bank_id)
+    LoanID INT PRIMARY KEY,
+    Amount DECIMAL(10, 2),
+    BranchID INT,
+    CustomerID INT,
+    FOREIGN KEY (BranchID) REFERENCES Branch(BranchID),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
